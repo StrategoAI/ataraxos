@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 from typing import Any, Optional
 import pickle
 from collections import OrderedDict
@@ -21,6 +22,14 @@ from pyengine.networks.arrangement_transformer import (
 from pyengine.networks.legacy_rl import TransformerRLConfig, TransformerRL
 from pyengine.utils import get_pystratego
 from pyengine.utils.init_helpers import is_valid_line, CHAR_TO_VAL, COUNTERS
+from pyengine.utils.pretrained_loading import (
+    PRETRAINED_RL_PTHW,
+    PRETRAINED_RL_PTHM,
+    PRETRAINED_INIT_PTHW,
+    PRETRAINED_INIT_PTHM,
+    load_pretrained_rl_model,
+    load_pretrained_arrangement_model,
+)
 
 pystratego = get_pystratego()
 
@@ -96,6 +105,13 @@ def get_checkpoint_step(checkpoint: str) -> int:
 def load_rl_model(
     fn: str, rank: Optional[int] = None
 ) -> tuple[TransformerRL, tuple[list[str], list[str]]]:
+    pretrained_paths = {
+        str(PRETRAINED_RL_PTHW.resolve()),
+        str(PRETRAINED_RL_PTHM.resolve()),
+    }
+    if str(Path(fn).resolve()) in pretrained_paths:
+        return load_pretrained_rl_model(fn, rank)
+
     log_dir = log_dir_from_fn(fn)
     train_info = get_train_info(log_dir)
     if rank is not None:
@@ -179,6 +195,13 @@ def load_belief_model(fn: str, rank: Optional[int] = None):
 
 
 def load_arrangement_model(fn: str, rank: Optional[int] = None) -> ArrangementTransformer:
+    pretrained_paths = {
+        str(PRETRAINED_INIT_PTHW.resolve()),
+        str(PRETRAINED_INIT_PTHM.resolve()),
+    }
+    if str(Path(fn).resolve()) in pretrained_paths:
+        return load_pretrained_arrangement_model(fn, rank)
+
     log_dir = log_dir_from_fn(fn)
     train_info = get_train_info(log_dir)
     if rank is not None:
