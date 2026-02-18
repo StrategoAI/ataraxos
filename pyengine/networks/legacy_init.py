@@ -123,7 +123,7 @@ class TransformerInitialization(nn.Module):
     def device(self):
         return next(self.parameters()).device
 
-    def forward(self, seq: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
+    def forward(self, seq: torch.Tensor) -> dict[str, torch.Tensor]:
         assert seq.shape[1] <= self.seq_len
         assert seq.shape[2] == self.n_class
 
@@ -159,7 +159,7 @@ class TransformerInitialization(nn.Module):
         if self.cfg.weight_counts:
             logits += counts.clamp(min=1).log()
 
-        return logits, v, reg_pred
+        return {"logits": logits, "value": v, "ent_pred": reg_pred}
 
 
 @torch.no_grad()

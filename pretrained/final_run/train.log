@@ -1,0 +1,28 @@
+===============train_info===============
+barrage: 0
+full_info: 0
+move_memory: 86
+max_num_moves: 4000
+rl:
+  traj_len_per_player: 101
+  rl_transformer:
+    depth: 8
+    dropout: 0.0
+    embed_dim_per_head_over8: 6
+    ff_factor: 4
+    legacy: 0
+    n_head: 8
+    orient_board: 0
+    plane_history_len: 32
+    pos_emb_std: 0.1
+    protect_legacy: 0
+    resume:
+      protect_legacy: null
+    use_actadj: 1
+    use_battle: 1
+    use_cemetery: 1
+    use_evade: 1
+    use_piece_ids: 1
+    use_protect: 1
+    use_threaten: 1
+========================================
